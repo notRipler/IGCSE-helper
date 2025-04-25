@@ -2,15 +2,24 @@ const express = require('express');
 const connectDB = require('./config/db');
 const dotenv = require('dotenv');
 const cors = require('cors');
-
+const performanceRoutes = require('./routes/performanceRoutes');
+const courseRoutes = require('./routes/courseRoutes');
+const auth = require('./middleware/auth');
+const roleCheck = require('./middleware/role');
+const notificationRoutes = require('./routes/notificationRoutes');
+const cmsRoutes = require('./routes/cmsRoutes');
+const homeworkRoutes = require('./routes/homeworkRoutes');
 dotenv.config();
 connectDB();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use('/api/auth', require('./routes/auth'));
-// Add other routes: /users, /homework, /stats, etc.
-
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/performance', performanceRoutes);
+app.use('/api/courses', courseRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/cms', cmsRoutes);
+app.use('/api/homework', homeworkRoutes);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
